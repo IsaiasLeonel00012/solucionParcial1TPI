@@ -1,55 +1,143 @@
-<?php 
+<?php
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+//arreglo muldimencional 
 
-   $nombre = $_POST["nombre"];
-   $edad = $_POST["edad"];
-   $correo = $_POST["correo"];
-   $videojuego = $_POST["videojuego"];
-   $modalidad = $_POST["modalidad"];
-   $experiencia = $_POST["experencia"];
+$videojuegos = [
+
+    [
+        "nombre" => "FIFA25",
+        "categoria" => "Deportes",
+        "costo" => 20,
+        "cantidad_maxima" => 10
+    ],
+
+    [
+        "nombre" => "Tekken8",
+        "categoria" => "Pelea",
+        "costo" => 25,
+        "cantidad_maxima" => 8
+    ],
+
+    [
+        "nombre" => "Valorant",
+        "categoria" => "Acción",
+        "costo" => 30,
+        "cantidad_maxima" => 10
+    ],
+
+    [
+        "nombre" => "Mario Kart 8",
+        "categoria" => "Carreras",
+        "costo" => 15,
+        "cantidad_maxima" => 12
+    ]
+
+];
 
 
-   echo "nombre". $nombre. "<br>";
-   echo "edad". $edad."<br>";
-   echo "correo" . $correo."<br>";
-   echo "videojuego". $videojuego."<br>";
-   echo "modalidad" . $modalidad."<br>";
-   echo "experencia". $experiencia."<br>";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $nombre = $_POST["nombre"];
+    $edad = $_POST["edad"];
+    $correo = $_POST["correo"];
+    $videojuego = $_POST["videojuego"];
+    $modalidad = $_POST["modalidad"];
+    $experiencia = $_POST["experencia"];
 
 
-   if(
-
-      empty($nombre) ||
-       empty($edad) || 
-       empty($correo) || 
-       empty($modalidad) || 
-       empty($experiencia)
-   ){
-
-      echo "Todos los cambos deben ser obligatorios";
+    echo "nombre" . $nombre . "<br>";
+    echo "edad" . $edad . "<br>";
+    echo "correo" . $correo . "<br>";
+    echo "videojuego" . $videojuego . "<br>";
+    echo "modalidad" . $modalidad . "<br>";
+    echo "experencia" . $experiencia . "<br>";
 
 
-      }elseif(!is_numeric($edad)){
+    if (
 
-      echo "la edad debe ser un numero";
+        empty($nombre) ||
+        empty($edad) ||
+        empty($correo) ||
+        empty($videojuego) ||
+        empty($modalidad) ||
+        empty($experiencia)
+    ) {
 
-    } elseif ($edad < 0){
-      
-      echo "la edad no debe ser menor a cero";
+        echo "Todos los cambos deben ser obligatorios";
+    } elseif (!is_numeric($edad)) {
 
-    }elseif(!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+        echo "la edad debe ser un numero";
+    } elseif ($edad <= 0) {
+
+        echo "la edad no debe ser menor a cero";
+    } elseif (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
 
         echo "El correo no es válido.";
-
     } else {
 
-        echo "Datos recibidos correctamente.";
+        echo "Datos recibidos correctamente.<br>";
+
+        $encontrado = false;
+
+        foreach ($videojuegos as $juego) {
+
+            if ($juego["nombre"] == $videojuego) {
+
+                $encontrado = true;
+
+                echo "Videojuego: " . $juego["nombre"] . "<br>";
+                echo "Categoría: " . $juego["categoria"] . "<br>";
+                echo "Costo: $" . $juego["costo"] . "<br>";
+                echo "Cantidad máxima: " . $juego["cantidad_maxima"] . "<br>";
+
+                break;
+            }
+        }
+
+        if (!$encontrado) {
+
+            echo "El videojuego seleccionado no existe.";
+        }
+    }
+}
+
+
+if($edad < 18)
+{
+   
+  if($experiencia == "principiante")
+    {
+
+      $categoriaParticipante = "Juvenil Principiante";
+
+    }elseif($experiencia == "intermedio"){
+        $categoriaParticipante = "Juvenil Intermedio";
+    }else{
+        $categoriaParticipante = "Juvenil Avanzado";
     }
 
+}else{
 
+    if($experiencia == "principiante")
+    {
 
+      $categoriaParticipante = "Juvenil Principiante";
+
+    }elseif($experiencia == "intermedio"){
+        $categoriaParticipante = "Juvenil Intermedio";
+    }else{
+        $categoriaParticipante = "Juvenil Avanzado";
+    }
+
+   
 }
+
+    echo "Categoría del participante: "
+     . $categoriaParticipante . "<br>";
+
+
+
+
 
 ?>
 
@@ -57,11 +145,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <h1>Incripciones al Torneo</h1>
 
@@ -74,26 +164,26 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         <label for="text">Edad</label>
         <input type="number" id="edad" name="edad">
 
-        
+
         <br><br>
 
         <label for="text">Correo electronico</label>
         <input type="email" id="correo" name="correo">
 
-        
+
         <br><br>
 
         <label for="videojuego">VideoJuegos</label>
         <select name="videojuego" id="videojuego">
             <option value="">Selecione un Video Juego</option>
-            <option value="FiFa25">FiFA25</option>
+            <option value="FIFA25">FIFA25</option>
             <option value="Tekken8">Tekken8</option>
             <option value="Valorant">Valorant</option>
             <option value="Mario Kart 8">Mario Kart 8</option>
 
         </select>
 
-         <br><br>
+        <br><br>
 
         <label for="modalidad">Modalidad de participación:</label>
         <select id="modalidad" name="modalidad">
@@ -124,4 +214,5 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     </form>
 </body>
+
 </html>
