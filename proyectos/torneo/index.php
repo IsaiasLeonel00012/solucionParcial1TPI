@@ -18,6 +18,37 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
    echo "experencia". $experiencia."<br>";
 
 
+   if(
+
+      empty($nombre) ||
+       empty($edad) || 
+       empty($correo) || 
+       empty($modalidad) || 
+       empty($experiencia)
+   ){
+
+      echo "Todos los cambos deben ser obligatorios";
+
+
+      }elseif(!is_numeric($edad)){
+
+      echo "la edad debe ser un numero";
+
+    } elseif ($edad < 0){
+      
+      echo "la edad no debe ser menor a cero";
+
+    }elseif(!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+
+        echo "El correo no es válido.";
+
+    } else {
+
+        echo "Datos recibidos correctamente.";
+    }
+
+
+
 }
 
 ?>
